@@ -1,5 +1,5 @@
 // src/data/constants.ts
-import { DriverBase } from '../types/game';
+import type { DriverBase } from '../types/game';
 
 export const MIN_AGE_PER_SERIES = [0, 14, 15, 16, 16, 17, 18];
 export const MIN_OVR_PER_SERIES = [0, 50, 56, 62, 68, 73, 78];
