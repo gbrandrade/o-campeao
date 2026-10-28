@@ -1,5 +1,5 @@
 // src/components/views/HomeView.tsx
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useGame } from '../../store/GameContext';
 
 export const HomeView = () => {
