@@ -1,5 +1,3 @@
-// src/engine.ts
-
 // =========================================================================
 // 1. DADOS E CONSTANTES
 // =========================================================================
@@ -54,14 +52,15 @@ export const HIST_F1: any = {
 };
 export const ACAD = [ { id: 'rbr', n: 'Red Bull Junior Team', c: '#3671C6', bonus: 'Prioridade na Red Bull / Racing Bulls e +1 Mentalidade por ano', tPref: ['Red Bull', 'Racing Bulls', 'RB'] }, { id: 'fda', n: 'Ferrari Driver Academy', c: '#E8002D', bonus: 'Prioridade na Ferrari / Haas e +1 Qualificação por ano', tPref: ['Ferrari', 'Haas', 'Sauber', 'Cadillac'] }, { id: 'mer', n: 'Mercedes Junior Team', c: '#00A19B', bonus: 'Prioridade na Mercedes / Williams e +1 Consistência por ano', tPref: ['Mercedes', 'Williams', 'McLaren'] } ];
 export const LIFE_ITEMS = [ { id: 'vg', ico: IC.gamepad, n: 'SimRig Pro & Videogames', cost: 0.015, maint: 0.002, desc: 'Setup doméstico completo (+1 Consistência)', bonus: [6, 1] }, { id: 'cl', ico: IC.shirt, n: 'Guarda-Roupa de Grife', cost: 0.045, maint: 0.008, desc: 'Presença marcante no paddock (+1 Reputação)', rep: 1 }, { id: 'tr', ico: IC.plane, n: 'Férias VIP em Mônaco', cost: 0.12, maint: 0.025, desc: 'Descanso mental de luxo (+2 Mentalidade)', bonus: [7, 2] }, { id: 'ca', ico: IC.car, n: 'Supercarro V8 Biturbo', cost: 0.38, maint: 0.045, desc: 'Chegue aos autódromos em estilo (+1 Largada, +1 REP)', bonus: [2, 1], rep: 1 }, { id: 'ho', ico: IC.home, n: 'Mansão em Monte Carlo', cost: 3.2, maint: 0.18, desc: 'Endereço dos campeões (+2 Mentalidade, +2 REP)', bonus: [7, 2], rep: 2 } ];
+
 export const SR: any[] = [
-    { n: 'Karting', full: 'CIK-FIA World Karting', spec: '125cc 2T · Direct Drive', R: 8, lv: [46, 63], ageRange: [12, 15], driversPerTeam: 2, T: [['Tony Kart', 65], ['CRG', 63], ['KR Motorsport', 62], ['Birel ART', 60], ['Parolin', 58], ['Kosmic Racing', 56], ['Ward Racing', 55], ['Energy Corse', 53], ['Sodi Racing', 51], ['Lenzokart', 49]], tracks: ['South Garda', 'Adria', 'Sarno', 'Genk', 'Kristianstad', 'Le Mans', 'Portimão', 'Alahärmä'], roster: ['Lorenzo Travisanutto', 'Taylor Barnard', 'Dexter Patterson', 'Luigi Coluccio', 'Pedro Hiltbrand'] },
-    { n: 'F-Delta / Vee', full: 'Fórmula Delta & Fórmula Vee', spec: 'Transição Escola · 130 cv', R: 8, lv: [51, 68], ageRange: [14, 18], driversPerTeam: 2, T: [['Fórmula Academy', 68], ['Lorenzetti Racing', 66], ['Rosset Racing', 65], ['W2 ProGP', 63], ['Bassani Jr', 62], ['TMG Escola', 60], ['Cesário Jr', 59], ['PropCar Base', 57]], tracks: ['Interlagos', 'Velocitta', 'Goiânia', 'Curvelo', 'Cascavel', 'Velopark', 'Tarumã', 'Interlagos Final'], roster: ['Gabriel Fonseca', 'Pedro Burger', 'Lucas Veloso'] },
-    { n: 'Fórmula 4', full: 'FIA Formula 4 Championship', spec: 'Tatuus F4-T421 · 180 cv', R: 10, lv: [57, 74], ageRange: [15, 18], driversPerTeam: 2, T: [['Prema Racing', 76], ['US Racing', 74], ['Van Amersfoort', 73], ['MP Motorsport', 72], ['Campos Racing', 70], ['Cavaleiro Sports', 68], ['TMG Racing', 67]], tracks: ['Misano', 'Imola', 'Vallelunga', 'Mugello', 'Paul Ricard', 'Red Bull Ring', 'Barcelona', 'Spa', 'Monza', 'Interlagos'], roster: ['Freddie Slater', 'Akshay Bohra', 'Alex Powell'] },
-    { n: 'FRECA', full: 'Formula Regional European', spec: 'Tatuus T-318 · 285 cv', R: 10, lv: [63, 79], ageRange: [16, 20], driversPerTeam: 2, T: [['Prema Racing', 81], ['R-ace GP', 80], ['ART Grand Prix', 78], ['Van Amersfoort', 77], ['Trident', 75], ['MP Motorsport', 74]], tracks: ['Hockenheim', 'Spa', 'Zandvoort', 'Hungaroring', 'Mugello', 'Paul Ricard', 'Imola', 'Red Bull Ring', 'Barcelona', 'Monza'], roster: ['Rafael Câmara', 'James Wharton', 'Brando Badoer'] },
-    { n: 'Fórmula 3', full: 'FIA Formula 3 Championship', spec: 'Dallara F3 · 400 cv', R: 10, lv: [68, 84], ageRange: [16, 21], driversPerTeam: 3, T: [['Prema Racing', 85], ['Trident', 84], ['ART Grand Prix', 82], ['Campos Racing', 81], ['Hitech Pulse-Eight', 80], ['MP Motorsport', 78], ['Van Amersfoort', 76]], tracks: ['Sakhir', 'Melbourne', 'Imola', 'Monte Carlo', 'Barcelona', 'Red Bull Ring', 'Silverstone', 'Hungaroring', 'Spa', 'Monza'], roster: ['Leonardo Fornaroli', 'Gabriele Minì', 'Luke Browning'] },
-    { n: 'Fórmula 2', full: 'FIA Formula 2 Championship', spec: 'Dallara F2 2024 · 620 cv', R: 14, lv: [74, 89], ageRange: [17, 23], driversPerTeam: 2, T: [['Invicta Racing', 90], ['Campos Racing', 89], ['MP Motorsport', 88], ['Prema Racing', 87], ['Rodin Motorsport', 86], ['Hitech Pulse-Eight', 85], ['ART Grand Prix', 84]], tracks: ['Sakhir', 'Jeddah', 'Melbourne', 'Imola', 'Monte Carlo', 'Barcelona', 'Red Bull Ring', 'Silverstone', 'Hungaroring', 'Spa', 'Monza', 'Baku', 'Lusail', 'Yas Marina'], roster: ['Paul Aron', 'Zane Maloney', 'Jak Crawford'] },
-    { n: 'Fórmula 1', full: 'FIA Formula One World Champ.', spec: '1000 cv Híbrido', R: 24, tracks: ['Sakhir', 'Jeddah', 'Melbourne', 'Suzuka', 'Xangai', 'Miami', 'Imola', 'Monte Carlo', 'Montreal', 'Barcelona', 'Red Bull Ring', 'Silverstone', 'Hungaroring', 'Spa', 'Zandvoort', 'Monza', 'Baku', 'Marina Bay', 'Austin', 'México', 'Interlagos', 'Las Vegas', 'Lusail', 'Yas Marina'] }
+    { n: 'Karting', full: 'CIK-FIA World Karting', spec: '125cc 2T · Direct Drive', R: 8, lv: [46, 63], ageRange: [12, 15], driversPerTeam: 2, T: [['Tony Kart', 65], ['CRG', 63], ['KR Motorsport', 62], ['Birel ART', 60], ['Parolin', 58], ['Kosmic Racing', 56], ['Ward Racing', 55], ['Energy Corse', 53], ['Sodi Racing', 51], ['Lenzokart', 49]], tracks: ['South Garda (Lonato)', 'Adria Karting', 'Sarno (Napoli)', 'Genk (Bélgica)', 'Kristianstad (Suécia)', 'Le Mans Karting', 'Portimão Kart', 'Alahärmä (Finlândia)'], roster: ['Lorenzo Travisanutto', 'Taylor Barnard', 'Dexter Patterson', 'Luigi Coluccio', 'Pedro Hiltbrand', 'Callum Bradshaw', 'Joe Turney', 'Matheus Morgatto', 'Tuukka Taponen', 'Kean Nakamura-Berta', 'Rene Lammers', 'Evan Giltaire', 'Yuanpu Cui', 'James Egozi', 'Enzo Tarnvanichkul', 'Maciej Gladysz', 'Kirill Kutskov', 'Gabriel Gomez', 'Juho Valtanen', 'Harry Thompson'] },
+    { n: 'F-Delta / Vee', full: 'Fórmula Delta & Fórmula Vee', spec: 'Transição Escola · 130 cv · Pneus Radiais', R: 8, lv: [51, 68], ageRange: [14, 18], driversPerTeam: 2, T: [['Fórmula Academy', 68], ['Lorenzetti Racing', 66], ['Rosset Racing', 65], ['W2 ProGP', 63], ['Bassani Jr', 62], ['TMG Escola', 60], ['Cesário Jr', 59], ['PropCar Base', 57], ['D4U Racing', 55], ['Vee Motorsport', 53]], tracks: ['Interlagos (SP)', 'Velocitta (Mogi Guaçu)', 'Goiânia', 'Curvelo (MG)', 'Cascavel (PR)', 'Velopark (RS)', 'Tarumã (RS)', 'Interlagos Final'], roster: ['Gabriel Fonseca', 'Pedro Burger', 'Lucas Veloso', 'Caio Castro Jr', 'Breno Moura', 'Murilo Fiore', 'Guto Rotta', 'Henrique Pettinari', 'João Pedro Maia', 'Pietro Nalesso', 'Yuri Morelli', 'Cauã Mendes', 'Levi Simões', 'Davi Braga', 'Artur Lira', 'Vitor Hugo', 'Augusto Santin', 'Bruno Ribeiro', 'André Novaes', 'Renan Guerra'] },
+    { n: 'Fórmula 4', full: 'FIA Formula 4 Championship', spec: 'Tatuus F4-T421 · Chassi Carbono · 180 cv', R: 10, lv: [57, 74], ageRange: [15, 18], driversPerTeam: 2, T: [['Prema Racing', 76], ['US Racing', 74], ['Van Amersfoort', 73], ['MP Motorsport', 72], ['Campos Racing', 70], ['Cavaleiro Sports', 68], ['TMG Racing', 67], ['Oakberry Bassani', 65], ['R-ace GP', 64], ['PHM Racing', 62]], tracks: ['Misano', 'Imola', 'Vallelunga', 'Mugello', 'Paul Ricard', 'Red Bull Ring', 'Barcelona', 'Spa-Francorchamps', 'Monza', 'Interlagos'], roster: ['Freddie Slater', 'Akshay Bohra', 'Alex Powell', 'Jack Beeton', 'Hiyu Yamakoshi', 'Rashid Al Dhaheri', 'Gianmarco Pradel', 'Matheus Ferreira', 'Álvaro Cho', 'Filippo Fiorentino', 'Rafaela Ferreira', 'Ethan Ischer', 'Luka Sammalisto', 'Dion Gowda', 'Keanu Al Azhari', 'Maximilian Popov', 'Emanuele Olivieri', 'Kabir Anurag', 'Tomass Stolcermanis', 'Gustav Jonsson'] },
+    { n: 'FRECA', full: 'Formula Regional European (FRECA)', spec: 'Tatuus T-318 · Halo · 285 cv', R: 10, lv: [63, 79], ageRange: [16, 20], driversPerTeam: 2, T: [['Prema Racing', 81], ['R-ace GP', 80], ['ART Grand Prix', 78], ['Van Amersfoort', 77], ['Trident', 75], ['MP Motorsport', 74], ['RPM', 72], ['Saintéloc Racing', 71], ['KIC Motorsport', 69], ['G4 Racing', 67]], tracks: ['Hockenheim', 'Spa-Francorchamps', 'Zandvoort', 'Hungaroring', 'Mugello', 'Paul Ricard', 'Imola', 'Red Bull Ring', 'Barcelona', 'Monza'], roster: ['Rafael Câmara', 'James Wharton', 'Brando Badoer', 'Pedro Clerot', 'Ugo Ugochukwu', 'Noah Strømsted', 'Théophile Naël', 'Alessandro Giusti', 'Ivan Domingues', 'Kanato Le', 'Nikita Bedrin', 'Valerio Rinicella', 'Zachary David', 'Enzo Deligny', 'Enzo Peugeot', 'Roman Bilinski', 'Tasanapol Inthraphuvasak', 'Matteo De Palo', 'Nandhavud Bhirombhakdi', 'Giovanni Maschio'] },
+    { n: 'Fórmula 3', full: 'FIA Formula 3 Championship', spec: 'Dallara F3 · 400 cv · DRS · Grid 30 Carros', R: 10, lv: [68, 84], ageRange: [16, 21], driversPerTeam: 3, T: [['Prema Racing', 85], ['Trident', 84], ['ART Grand Prix', 82], ['Campos Racing', 81], ['Hitech Pulse-Eight', 80], ['MP Motorsport', 78], ['Van Amersfoort', 76], ['Rodin Motorsport', 75], ['AIX Racing', 73], ['Jenzer Motorsport', 71]], tracks: ['Sakhir (Bahrein)', 'Melbourne (Austrália)', 'Imola (Emília-Romanha)', 'Monte Carlo (Mônaco)', 'Barcelona (Espanha)', 'Red Bull Ring (Áustria)', 'Silverstone (Reino Unido)', 'Hungaroring (Hungria)', 'Spa-Francorchamps (Bélgica)', 'Monza (Itália)'], roster: ['Leonardo Fornaroli', 'Gabriele Minì', 'Luke Browning', 'Dino Beganovic', 'Christian Mansell', 'Nikola Tsolov', 'Tim Tramnitz', 'Sami Meguetounif', 'Laurens van Hoepen', 'Mari Boya', 'Noel León', 'Charlie Wurz', 'Callum Voisin', 'Martinius Stenshorne', 'Sebastián Montoya', 'Oliver Goethe', 'Kacper Sztuka', 'Santiago Ramos', 'Max Esterson', 'Cian Shields', 'Matías Zagazeta', 'Tommy Smith', 'Sophia Flörsch', 'Piotr Wisnicki', 'Tasanapol Inthraphuvasak', 'Joseph Loake', 'Joshua Dufek', 'Nikita Bedrin', 'Alex Dunne', 'Oleksandr Bondarev'] },
+    { n: 'Fórmula 2', full: 'FIA Formula 2 Championship', spec: 'Dallara F2 2024 · V6 Turbo 620 cv · Preliminar F1', R: 14, lv: [74, 89], ageRange: [17, 23], driversPerTeam: 2, T: [['Invicta Racing', 90], ['Campos Racing', 89], ['MP Motorsport', 88], ['Prema Racing', 87], ['Rodin Motorsport', 86], ['Hitech Pulse-Eight', 85], ['ART Grand Prix', 84], ['DAMS Lucas Oil', 82], ['Trident', 80], ['Van Amersfoort', 78]], tracks: ['Sakhir (Bahrein)', 'Jeddah (Arábia Saudita)', 'Melbourne (Austrália)', 'Imola (Itália)', 'Monte Carlo (Mônaco)', 'Barcelona (Espanha)', 'Red Bull Ring (Áustria)', 'Silverstone (Reino Unido)', 'Hungaroring (Hungria)', 'Spa-Francorchamps (Bélgica)', 'Monza (Itália)', 'Baku (Azerbaijão)', 'Lusail (Catar)', 'Yas Marina (Abu Dhabi)'], roster: ['Paul Aron', 'Zane Maloney', 'Jak Crawford', 'Victor Martins', 'Dennis Hauger', 'Kush Maini', 'Zak O\'Sullivan', 'Ritomo Miyata', 'Pepe Martí', 'Richard Verschoor', 'Enzo Fittipaldi', 'Joshua Dürksen', 'Amaury Cordeel', 'Juan Manuel Correa', 'Roman Staněk', 'Clement Novalak', 'Rafael Villagómez', 'Niels Koolen', 'Troy Miyazaki', 'Arthur Leclerc'] },
+    { n: 'Fórmula 1', full: 'FIA Formula One World Championship', spec: 'Ápice Mundial · 1000 cv Híbrido · 20 Vagas', R: 24, tracks: ['Sakhir (Bahrein)', 'Jeddah (Arábia Saudita)', 'Melbourne (Austrália)', 'Suzuka (Japão)', 'Xangai (China)', 'Miami (EUA)', 'Imola (Emília-Romanha)', 'Monte Carlo (Mônaco)', 'Montreal (Canadá)', 'Barcelona (Espanha)', 'Red Bull Ring (Áustria)', 'Silverstone (Reino Unido)', 'Hungaroring (Hungria)', 'Spa-Francorchamps (Bélgica)', 'Zandvoort (Holanda)', 'Monza (Itália)', 'Baku (Azerbaijão)', 'Marina Bay (Singapura)', 'Austin (EUA)', 'Cidade do México', 'Interlagos (Brasil)', 'Las Vegas (EUA)', 'Lusail (Catar)', 'Yas Marina (Abu Dhabi)'] }
 ];
 
 const att = (d: any) => { const [e, r, a, p] = [d[3], d[4], d[5], d[6]]; return [p, (r + p) / 2, (r + a) / 2, r, a, e, (a + e) / 2, (e * 2 + a) / 3].map(Math.round); };
@@ -76,17 +75,28 @@ export const CUR = [
     ['Fernando Alonso', 'ESP', 89, 99, 91, 88, 88, 45, 4, 1981],
     ['Carlos Sainz', 'ESP', 88, 89, 89, 85, 87, 32, 5, 1994],
     ['Pierre Gasly', 'FRA', 85, 85, 85, 82, 85, 30, 6, 1996],
-    ['Alexander Albon', 'THA', 85, 85, 86, 81, 85, 30, 5, 1996]
+    ['Alexander Albon', 'THA', 85, 85, 86, 81, 85, 30, 5, 1996],
+    ['Nico Hülkenberg', 'GER', 84, 91, 84, 84, 85, 39, 9, 1987],
+    ['Esteban Ocon', 'FRA', 84, 85, 85, 82, 83, 30, 7, 1996],
+    ['Sergio Pérez', 'MEX', 83, 93, 82, 81, 83, 36, 10, 1990],
+    ['Valtteri Bottas', 'FIN', 82, 91, 80, 88, 83, 37, 10, 1989],
+    ['Isack Hadjar', 'FRA', 81, 73, 83, 80, 84, 22, 3, 2004],
+    ['Oliver Bearman', 'GBR', 82, 74, 84, 79, 83, 21, 7, 2005],
+    ['Gabriel Bortoleto', 'BRA', 82, 74, 84, 81, 83, 21, 9, 2004],
+    ['Liam Lawson', 'NZL', 81, 76, 81, 79, 81, 24, 8, 2002],
+    ['Lance Stroll', 'CAN', 78, 85, 78, 75, 78, 27, 4, 1998],
+    ['Franco Colapinto', 'ARG', 79, 73, 80, 78, 80, 23, 6, 2003],
+    ['Arvid Lindblad', 'GBR', 77, 68, 78, 76, 79, 19, 8, 2007]
 ];
-export const L = [['Sebastian Vettel', 'GER', [96, 93, 94, 89, 88, 91, 92, 91]], ['Niki Lauda', 'AUT', [88, 94, 85, 88, 90, 95, 97, 98]], ['Jim Clark', 'GBR', [98, 97, 95, 93, 97, 90, 92, 94]], ['Jackie Stewart', 'GBR', [93, 95, 91, 92, 99, 92, 95, 95]], ['Mika Häkkinen', 'FIN', [96, 94, 91, 93, 92, 87, 89, 92]], ['Nelson Piquet', 'BRA', [92, 93, 88, 90, 92, 96, 93, 94]], ['Emerson Fittipaldi', 'BRA', [89, 91, 86, 89, 89, 93, 91, 92]]];
-export const PRIME = [['Verstappen (2023)', 'NED', [97, 99, 95, 97, 99, 97, 99, 99]], ['Schumacher (2004)', 'GER', [98, 99, 96, 96, 96, 95, 99, 99]], ['Schumacher (2002)', 'GER', [96, 99, 95, 94, 98, 93, 99, 99]], ['Senna (1988)', 'BRA', [99, 98, 93, 97, 99, 87, 92, 98]], ['Senna (1991)', 'BRA', [98, 97, 94, 96, 99, 90, 95, 99]], ['Hamilton (2020)', 'GBR', [99, 98, 94, 95, 99, 98, 99, 99]]];
+export const L = [['Sebastian Vettel', 'GER', [96, 93, 94, 89, 88, 91, 92, 91]], ['Niki Lauda', 'AUT', [88, 94, 85, 88, 90, 95, 97, 98]], ['Jim Clark', 'GBR', [98, 97, 95, 93, 97, 90, 92, 94]], ['Jackie Stewart', 'GBR', [93, 95, 91, 92, 99, 92, 95, 95]], ['Mika Häkkinen', 'FIN', [96, 94, 91, 93, 92, 87, 89, 92]], ['Nelson Piquet', 'BRA', [92, 93, 88, 90, 92, 96, 93, 94]], ['Emerson Fittipaldi', 'BRA', [89, 91, 86, 89, 89, 93, 91, 92]], ['Nigel Mansell', 'GBR', [94, 92, 91, 98, 95, 84, 85, 93]], ['Kimi Räikkönen', 'FIN', [94, 96, 92, 95, 90, 90, 89, 96]], ['Felipe Massa', 'BRA', [93, 89, 91, 86, 82, 87, 85, 86]]];
+export const PRIME = [['Verstappen (2023)', 'NED', [97, 99, 95, 97, 99, 97, 99, 99]], ['Schumacher (2004)', 'GER', [98, 99, 96, 96, 96, 95, 99, 99]], ['Schumacher (2002)', 'GER', [96, 99, 95, 94, 98, 93, 99, 99]], ['Senna (1988)', 'BRA', [99, 98, 93, 97, 99, 87, 92, 98]], ['Senna (1991)', 'BRA', [98, 97, 94, 96, 99, 90, 95, 99]], ['Hamilton (2020)', 'GBR', [99, 98, 94, 95, 99, 98, 99, 99]], ['Hamilton (2018)', 'GBR', [98, 97, 93, 96, 98, 96, 98, 98]], ['Prost (1986)', 'FRA', [92, 98, 91, 93, 89, 99, 99, 99]], ['Prost (1989)', 'FRA', [93, 98, 90, 92, 90, 98, 99, 98]], ['Fangio (1957)', 'ARG', [96, 98, 90, 99, 95, 93, 96, 99]], ['Fangio (1955)', 'ARG', [95, 97, 91, 94, 93, 96, 97, 98]]];
 export const POOL = CUR.map((d: any) => ({ n: d[0], f: d[1], rtg: d[2], a: att(d), leg: 0 })).concat(L.map((l: any) => ({ n: l[0], f: l[1], rtg: Math.round(l[2].reduce((a:any, b:any) => a + b) / 8), a: l[2], leg: 1 }))).concat(PRIME.map((l: any) => ({ n: l[0], f: l[1], rtg: Math.round(l[2].reduce((a:any, b:any) => a + b) / 8), a: l[2], leg: 2 })));
 export const PTS = [25, 18, 15, 12, 10, 8, 6, 4, 2, 1];
 export const SPT = [8, 7, 6, 5, 4, 3, 2, 1];
 export const EV = [
-    ['Chuva torrencial no circuito. O engenheiro pergunta no rádio se você quer arriscar tudo por fora ou manter o traçado seguro.', ['Arriscar tudo no molhado', .35, 'Manobra antológica na chuva! (Chuva +3)', 4, 3, 3, 'Aquaplanou na zebra e perdeu tempo. (Mentalidade -1)', 7, -1, -3], ['Manter traçado conservador', .78, 'Leitura fria da aderência e pontos garantidos. (Consistência +1)', 6, 1, 1, 'Ficou preso no spray de água e perdeu ritmo nas retas.', 6, 0, -1]],
-    ['Janela de Pit Stop aberta. A degradação térmica dos pneus traseiros subiu. Qual é a chamada no rádio?', ['Parar cedo (Tentar Undercut)', .45, 'Undercut cirúrgico! Volta de saída voadora. (Gestão de pneus +3)', 5, 3, 2, 'Saiu atrás de tráfego lento com DRS e fritou os pneus.', 5, -1, -2], ['Esticar o stint na pista (Overcut)', .68, 'Gestão magistral de borracha em ar limpo! (Gestão de pneus +1)', 5, 1, 1, 'Os pneus caíram do penhasco nas últimas voltas. (Gestão -1)', 5, -1, -2]],
-    ['Disputa roda a roda com seu companheiro de equipe na freada da Curva 1!', ['Mergulhar por dentro na freada', .40, 'Passou no limite! Mostrou quem manda. (Ultrapassagem +3)', 3, 3, 2, 'Toque entre os dois carros! Clima tenso no debriefing. (Mentalidade -2)', 7, -2, -3], ['Recolher e priorizar a equipe', .85, 'Jogo de equipe exemplar. O chefe elogiou. (Mentalidade +1)', 7, 1, 1, 'Perdeu embalo e acabou engolido pelo pelotão.', 7, -1, 0]],
+    ['Chuva torrencial no circuito. O engenheiro pergunta no rádio se você quer arriscar tudo por fora ou manter o traçado seguro.', ['Arriscar tudo no molhado', .35, 'Manobra antológica na chuva! Seu controle de carro impressionou o paddock. (Chuva +3)', 4, 3, 3, 'Aquaplanou na zebra e perdeu tempo voltando para a pista. (Mentalidade -1)', 7, -1, -3], ['Manter traçado conservador', .78, 'Leitura fria da aderência e pontos importantes garantidos. (Consistência +1)', 6, 1, 1, 'Ficou preso no spray de água e perdeu ritmo nas retas.', 6, 0, -1]],
+    ['Janela de Pit Stop aberta. A degradação térmica dos pneus traseiros subiu. Qual é a chamada no rádio?', ['Parar cedo (Tentar Undercut)', .45, 'Undercut cirúrgico! Volta de saída voadora com pneus novos. (Gestão de pneus +3)', 5, 3, 2, 'Saiu atrás de tráfego lento com DRS e fritou os pneus novos.', 5, -1, -2], ['Esticar o stint na pista (Overcut)', .68, 'Gestão magistral de borracha em ar limpo! (Gestão de pneus +1)', 5, 1, 1, 'Os pneus caíram do penhasco nas últimas voltas. (Gestão -1)', 5, -1, -2]],
+    ['Disputa roda a roda com seu companheiro de equipe na freada da Curva 1!', ['Mergulhar por dentro na freada', .40, 'Passou no limite! Mostrou quem manda na garagem. (Ultrapassagem +3)', 3, 3, 2, 'Toque entre os dois carros! Clima tenso no debriefing da equipe. (Mentalidade -2)', 7, -2, -3], ['Recolher e priorizar a equipe', .85, 'Jogo de equipe exemplar. O chefe de equipe elogiou sua maturidade. (Mentalidade +1)', 7, 1, 1, 'Perdeu embalo e acabou engolido pelo pelotão.', 7, -1, 0]],
     ['A fábrica trouxe um novo assoalho aerodinâmico experimental para o fim de semana.', ['Instalar especificação agressiva', .35, 'Correlação perfeita com o túnel de vento! O carro ganhou downforce. (Ritmo +2)', 1, 2, 4, 'O carro sofreu com porpoising severo nas retas. (Ritmo -1)', 1, -1, -3], ['Manter pacote aerodinâmico conhecido', .82, 'Acerto de suspensão refinado e carro na mão. (Ritmo +1)', 1, 1, 1, 'Sem ganho de velocidade frente aos rivais.', 1, 0, 0]]
 ];
 export const FN = ['Lucas', 'Mateo', 'Jonas', 'Dennis', 'Kai', 'Luca', 'Theo', 'Oscar', 'Noah', 'Ethan', 'Gabriel', 'Enzo', 'Arthur', 'Rafael', 'Tom', 'Leo'];
@@ -132,12 +142,12 @@ export function startDraft(sd: string, cleanName: string, numStr: string, eggTyp
     const isMax = eggType === 'max'; const isLec = eggType === 'lec'; const isEgg = isMax || isLec;
     G = {
         seed: sd,
-        name: isLec ? 'CHARLES LECLERC' : isMax ? 'MAX VERSTAPPEN' : (cleanName || 'SEU PILOTO').toUpperCase(),
+        name: isLec ? (cleanName ? cleanName.toUpperCase() : 'CHARLES LECLERC') : isMax ? 'MAX VERSTAPPEN' : (cleanName || 'SEU PILOTO').toUpperCase(),
         num: isLec ? 16 : isMax ? 1 : clamp(+numStr || 7, 1, 99),
         flag: isLec ? 'MON' : isMax ? 'NED' : n,
         v: isEgg ? Array(8).fill(100) : Array(8).fill(null),
         used: [], spin: isEgg ? 8 : 0, k: 0, rr: 2,
-        cur: isLec ? { n: 'Charles Leclerc', f: 'MON', rtg: 100, a: Array(8).fill(100), leg: 2 } : null,
+        cur: isLec ? { n: 'Charles Leclerc (2022)', f: 'MON', rtg: 100, a: Array(8).fill(100), leg: 2 } : isMax ? { n: 'Verstappen (Prime)', f: 'NED', rtg: 100, a: Array(8).fill(100), leg: 2 } : null,
         god: isEgg ? 1 : 0, egg: eggType
     };
     S = null;
@@ -166,9 +176,15 @@ export function startCareer() {
         first: 1, msg: '', op: {}, pe: 0, nid: 0, rep: 0, cash: 0, sl: G.god ? 40 : 0, items: [], con: null, neg: null, god: G.god,
         brk: 0, f1Init: 0, acad: null, h2h: { qW: 0, qL: 0, rW: 0, rL: 0 }, trDone: 0
     };
-    nw('Temporada 2018: Um novo talento surge no Kartismo: ' + S.name, 'Aos 12 anos, começa a sua caminhada rumo à F1.');
+    nw('Temporada 2018: Um novo talento surge no Kartismo: ' + S.name, 'Aos 12 anos, começa a sua caminhada rumo à Fórmula 1 seguindo a pirâmide oficial da FIA.');
+    
     const startVal = pot() * 0.7 + ovr() * 0.3;
-    let eligible = startVal >= 82 ? [0,1,2,3] : startVal >= 72 ? [1,2,3,4,5] : startVal >= 62 ? [3,4,5,6,7] : [5,6,7,8,9];
+    let eligible: number[] = [];
+    if (startVal >= 82) eligible = [0, 1, 2, 3];
+    else if (startVal >= 72) eligible = [1, 2, 3, 4, 5];
+    else if (startVal >= 62) eligible = [3, 4, 5, 6, 7];
+    else eligible = [5, 6, 7, 8, 9];
+
     const r = R(S.seed + 'k');
     S.offs = eligible.sort(() => r() - 0.5).slice(0, 3).sort((a, b) => a - b).map(t => ({ ser: 0, t }));
     S.ph = 'offer';
@@ -209,6 +225,9 @@ function buildF1GridForYear(y: number) {
     if (y <= 2024) {
         teams = [['McLaren', 95], ['Ferrari', 94], ['Red Bull', 94], ['Mercedes', 90], ['Aston Martin', 80], ['Alpine', 76], ['Haas', 75], ['RB', 74], ['Williams', 72], ['Sauber', 66]];
         drivers = [['Lando Norris', 'GBR', 92, 1999, 0], ['Oscar Piastri', 'AUS', 89, 2001, 0], ['Charles Leclerc', 'MON', 93, 1997, 1], ['Carlos Sainz', 'ESP', 89, 1994, 1], ['Max Verstappen', 'NED', 96, 1997, 2], ['Sergio Pérez', 'MEX', 82, 1990, 2], ['Lewis Hamilton', 'GBR', 92, 1985, 3], ['George Russell', 'GBR', 91, 1998, 3], ['Fernando Alonso', 'ESP', 90, 1981, 4], ['Lance Stroll', 'CAN', 78, 1998, 4], ['Pierre Gasly', 'FRA', 85, 1996, 5], ['Esteban Ocon', 'FRA', 84, 1996, 5], ['Nico Hülkenberg', 'GER', 85, 1987, 6], ['Kevin Magnussen', 'DEN', 79, 1992, 6], ['Yuki Tsunoda', 'JPN', 82, 2000, 7], ['Liam Lawson', 'NZL', 80, 2002, 7], ['Alexander Albon', 'THA', 85, 1996, 8], ['Franco Colapinto', 'ARG', 78, 2003, 8], ['Valtteri Bottas', 'FIN', 82, 1989, 9], ['Zhou Guanyu', 'CHN', 77, 1999, 9]];
+    } else if (y === 2025) {
+        teams = [['McLaren', 95], ['Ferrari', 94], ['Red Bull', 91], ['Mercedes', 92], ['Aston Martin', 79], ['Williams', 78], ['Alpine', 75], ['Haas', 74], ['Racing Bulls', 73], ['Sauber', 68]];
+        drivers = [['Lando Norris', 'GBR', 93, 1999, 0], ['Oscar Piastri', 'AUS', 91, 2001, 0], ['Charles Leclerc', 'MON', 93, 1997, 1], ['Lewis Hamilton', 'GBR', 92, 1985, 1], ['Max Verstappen', 'NED', 96, 1997, 2], ['Liam Lawson', 'NZL', 81, 2002, 2], ['George Russell', 'GBR', 93, 1998, 3], ['Kimi Antonelli', 'ITA', 86, 2006, 3], ['Fernando Alonso', 'ESP', 89, 1981, 4], ['Lance Stroll', 'CAN', 78, 1998, 4], ['Carlos Sainz', 'ESP', 88, 1994, 5], ['Alexander Albon', 'THA', 85, 1996, 5], ['Pierre Gasly', 'FRA', 85, 1996, 6], ['Jack Doohan', 'AUS', 76, 2003, 6], ['Esteban Ocon', 'FRA', 84, 1996, 7], ['Oliver Bearman', 'GBR', 80, 2005, 7], ['Yuki Tsunoda', 'JPN', 83, 2000, 8], ['Isack Hadjar', 'FRA', 79, 2004, 8], ['Nico Hülkenberg', 'GER', 84, 1987, 9], ['Gabriel Bortoleto', 'BRA', 80, 2004, 9]];
     } else {
         teams = [['Mercedes', 95], ['McLaren', 93], ['Ferrari', 91], ['Red Bull', 89], ['Aston Martin', 80], ['Williams', 76], ['Alpine', 74], ['Haas', 72], ['Racing Bulls', 70], ['Audi', 68], ['Cadillac', 64]];
         drivers = CUR.slice(0, 20).map((d, idx) => [d[0], d[1], d[2], d[9], Math.floor(idx / 2)]);
@@ -277,7 +296,7 @@ export function pick(o: any) {
         if (!S.f1Init) {
             buildF1GridForYear(S.year);
             S.f1Init = 1;
-            nw(`ESTREIA NA F1: ${S.name} assina com a ${S.f1t[o.t].n} para ${S.year}!`, `Aos ${S.age} anos, você entra na Fórmula 1.`);
+            nw(`ESTREIA NA F1: ${S.name} assina com a ${S.f1t[o.t].n} para ${S.year}!`, `Aos ${S.age} anos e com a Superlicença FIA em mãos, você entra oficialmente nas 20 vagas do grid da Fórmula 1.`);
         }
         S.ser = 6;
         place(o.t);
@@ -360,8 +379,8 @@ function market() {
     const cn = (d:any) => T[d.t].n, pk1 = (a:any) => a[Math.floor(r() * a.length)];
     if (y === 2026) {
         const sb = T.find((t:any) => t.n === 'Sauber');
-        if (sb) { sb.n = 'Audi'; nw('OFICIAL: Audi assume a operação da Sauber em 2026', ''); }
-        if (T.length < 11) { const cadIdx = T.length; T.push({ n: 'Cadillac', c: 64, b: 64, pts: 0 }); g.push(rookie(cadIdx), rookie(cadIdx)); nw('GRID EXPANDIDO: Cadillac entra na Fórmula 1 em 2026', ''); }
+        if (sb) { sb.n = 'Audi'; nw('OFICIAL: Audi assume a operação da Sauber em 2026', 'Montadora alemã estreia oficialmente com unidade de potência própria na Fórmula 1.'); }
+        if (T.length < 11) { const cadIdx = T.length; T.push({ n: 'Cadillac', c: 64, b: 64, pts: 0 }); g.push(rookie(cadIdx), rookie(cadIdx)); nw('GRID EXPANDIDO: Cadillac entra na Fórmula 1 em 2026', 'A 11ª equipe se junta ao campeonato mundial.'); }
     }
     g.forEach((d:any) => {
         if (d.p) return;
@@ -374,10 +393,9 @@ function market() {
         if (d.p || d.age < 37 || r() >= Math.min(.6, (d.age - 35) * .15)) return;
         const n = rookie(d.t); g[i] = n;
         
-        // CORREÇÃO: Remoção do operador spread que causava o TS2556
         const [titulo, descricao] = pk1([
-            ['ADEUS ÀS PISTAS: ' + d.n + ' anuncia aposentadoria da F1', ''], 
-            ['FIM DE UMA ERA: ' + d.n + ' se despede', '']
+            ['ADEUS ÀS PISTAS: ' + d.n + ' anuncia aposentadoria da F1', 'Aos ' + d.age + ' anos, o veterano deixa a ' + T[d.t].n + ' após uma longa trajetória no grid. O jovem ' + n.n + ' assume a vaga em ' + y + '.'], 
+            ['FIM DE UMA ERA: ' + d.n + ' se despede', 'A ' + T[d.t].n + ' confirmou que o contrato não será renovado. ' + n.n + ' chega para ' + y + '.']
         ]);
         nw(titulo, descricao);
     });
@@ -389,7 +407,7 @@ function market() {
         if (a.r < b.r + 2 || (b.r >= 86 && b.age < 35)) continue;
         const from = cn(a), to = cn(b); [a.t, b.t] = [b.t, a.t];
         a.ct = 2 + Math.floor(r() * 2); b.ct = 1 + Math.floor(r() * 2); x++;
-        nw('OFICIAL: ' + a.n + ' assina com a ' + to + ' para ' + y, `Deixa a ${from}.`);
+        nw('OFICIAL: ' + a.n + ' assina com a ' + to + ' para ' + y, `Aos ${a.age} anos, o piloto deixa a ${from} em contrato de ${a.ct} temporada(s). ${b.n} faz o caminho inverso.`);
     }
     g.forEach((d:any) => { if (!d.p && d.ct <= 0) d.ct = d.r >= 86 ? 2 + Math.floor(r() * 3) : 1 + Math.floor(r() * 2); });
 }
@@ -401,6 +419,13 @@ function carsStep() {
             t.b = Math.round(.5 * (t.b ?? t.c) + .5 * S.nx[i]);
             t.c = clamp(Math.round(.4 * t.c + .6 * t.b + (r() - .5) * 6), old[i] - 14, old[i] + 14);
         });
+        let u = 0, w = 0;
+        T.forEach((t:any, i:number) => {
+            const x = t.c - old[i];
+            if (x > T[u].c - old[u]) u = i;
+            if (x < T[w].c - old[w]) w = i;
+        });
+        nw('NOVO REGULAMENTO: ' + T[u].n + ' sai na frente', 'A nova geração de carros embaralhou o pelotão. ' + T[w].n + ' foi quem mais sofreu na transição.');
         S.nx = null;
     } else {
         T.forEach((t:any) => {
@@ -408,10 +433,12 @@ function carsStep() {
             const pos = rk.indexOf(t), atr = pos < 3 ? -1.5 : pos >= T.length - 3 ? 2 : 0;
             t.c = clamp(Math.round(t.c + clamp((t.b + atr - t.c) * .3 + (r() + r() - 1) * 7, -9, 9)), Math.max(50, t.b - 12), Math.min(97, t.b + 9));
         });
+        const d = T.map((t:any, i:number) => t.c - old[i]), up = d.indexOf(Math.max(...d)), dn = d.indexOf(Math.min(...d));
+        if (d[up] >= 4) nw('EVOLUÇÃO: ' + T[up].n + ' chega forte para ' + (S.year + 1), 'Fontes da fábrica falam em pacote aerodinâmico novo e ganho de ritmo nos testes de inverno.');
+        if (d[dn] <= -4) nw('CRISE: ' + T[dn].n + ' perde competitividade', 'Problemas de desenvolvimento e de correlação entre túnel de vento e pista preocupam a equipe.');
     }
 }
 
-// CORREÇÃO: A Lógica de Ofertas Restaurada Integralmente!
 function offers() {
     const nextYear = S.first ? S.year : S.year + 1;
     const P = Math.max(1, S.last ? S.last.pos - (S.rep >= 2 ? 2 : S.rep <= -2 ? -2 : 0) : 5);
@@ -457,7 +484,7 @@ function offers() {
         }
         pk(band, 3).sort((a:any, b:any) => a - b).forEach(t => o.push({ ser: tgt, t }));
     }
-    S.brk = 0; return o;
+    S.paid = 0; S.brk = 0; return o;
 }
 
 function prepOffers() {
@@ -471,7 +498,7 @@ function evalCon() {
     if (c.w) g.push(c.gw >= c.w); if (c.p) g.push(c.gp >= c.p); if (c.ti) g.push(c.gt > 0);
     S.con = null; if (!g.length) return;
     const r = g.filter(x => x).length / g.length;
-    if (r >= 1) { S.rep += 3; S.msg += ' Metas batidas com sucesso!'; } else if (r >= .5) { S.rep += 1; } else { S.rep -= 2; S.msg += ' Falhou nas metas.'; }
+    if (r >= 1) { S.rep += 3; S.msg += ' Metas batidas com sucesso!'; } else if (r >= .5) { S.rep += 1; } else { S.rep -= 2; S.msg += ' Falhou nas metas exigidas pelo chefe.'; }
     S.rep = clamp(S.rep, -6, 8);
 }
 
@@ -482,34 +509,64 @@ function seasonEnd() {
     const slEarned = (SL_PTS[S.ser] && SL_PTS[S.ser][pos - 1]) || 0;
     if (slEarned > 0 && !F1) S.sl = Math.min(40, (S.sl || 0) + slEarned);
 
-    if (!F1) { nw(`${N} ${S.year}: ${rk[0].n} sagra-se campeão!`, `Você terminou em P${pos}.`); }
-    else { nw(`F1 ${S.year}: ${rk[0].n} é o Campeão Mundial!`, ``); carsStep(); }
+    if (!F1) { 
+        nw(`${N} ${S.year}: ${rk[0].n} sagra-se campeão da temporada!`, `Você encerrou o campeonato na ${pos}ª colocação com ${me.pts} pontos${slEarned ? ` (+${slEarned} pts de Superlicença FIA)` : ''}.`);
+        if (HIST_F1[S.year]) {
+            HIST_F1[S.year].forEach(([t, d]: any[]) => nw(t, d));
+        }
+    }
+    else { 
+        nw(`F1 ${S.year}: ${rk[0].n} (${S.T[rk[0].t].n}) é o Campeão Mundial de Fórmula 1!`, `Temporada encerrada após 24 etapas.`); 
+        carsStep(); 
+    }
 
     const tm = getTeammate();
     if (tm) {
-        if (S.h2h.rW > S.h2h.rL) { S.rep = clamp(S.rep + 1, -6, 8); S.msg = `Venceu duelo interno (+1 REP). `; }
-        else if (S.h2h.rL > S.h2h.rW + 2) { S.rep = clamp(S.rep - 1, -6, 8); S.msg = `Superado pelo companheiro (-1 REP). `; }
+        if (S.h2h.rW > S.h2h.rL) { S.rep = clamp(S.rep + 1, -6, 8); S.msg = `Venceu duelo interno contra ${tm.n} (${S.h2h.rW}x${S.h2h.rL} em corridas, +1 REP). `; }
+        else if (S.h2h.rL > S.h2h.rW + 2) { S.rep = clamp(S.rep - 1, -6, 8); S.msg = `Superado pelo companheiro ${tm.n} (${S.h2h.rW}x${S.h2h.rL} em corridas, -1 REP). `; }
+        else { S.msg = ''; }
+    } else {
+        S.msg = '';
     }
 
-    if (slEarned > 0 && !F1) S.msg += `+${slEarned} pts de Superlicença. `;
+    if (slEarned > 0 && !F1) S.msg += `+${slEarned} pts de Superlicença (Total: ${S.sl}/40). `;
 
     const maintCost = (S.items || []).reduce((acc:number, id:string) => acc + (LIFE_ITEMS.find(x => x.id === id)?.maint || 0), 0);
-    if (maintCost > 0) { S.cash = Math.max(0, S.cash - maintCost); S.msg += `Manutenção de bens paga. `; }
+    if (maintCost > 0) { S.cash = Math.max(0, S.cash - maintCost); S.msg += `Manutenção de bens: -${(maintCost >= 1 ? '€' + (maintCost >= 10 ? Math.round(maintCost) : maintCost.toFixed(2)) + 'M' : '€' + Math.round(maintCost * 1000) + ' mil')}. `; }
 
     if (S.acad && !F1) { const attrIdx = S.acad === 'rbr' ? 7 : S.acad === 'fda' ? 0 : 6; S.v[attrIdx] = clamp(S.v[attrIdx] + 1, 40, S.god ? 100 : 99); }
     S.streak = (F1 && pos === 1) ? (S.streak || 0) + 1 : 0;
 
     if (F1) {
         S.f1n = (S.f1n || 0) + 1;
-        if (S.f1n % 4 === 3) { S.nx = S.f1t.map((t:any) => clamp((t.b ?? t.c) + (r() - .5) * 24, 55, 96)); S.msg += ' Novo regulamento técnico da FIA anunciado!'; }
+        if (S.f1n % 4 === 3) { S.nx = S.f1t.map((t:any) => clamp((t.b ?? t.c) + (r() - .5) * 24, 55, 96)); S.msg += ' Novo regulamento técnico da FIA anunciado para ' + (S.year + 2) + '!'; }
     }
 
-    if (pos === 1 && !F1) S.msg += ` CAMPEÃO DA ${N}!`;
+    if (pos === 1 && !F1) {
+        if (S.ser === 5) {
+            if (S.con) S.con = null;
+            S.msg += `CAMPEÃO DA FIA F2! Pelo regulamento da FIA, o campeão sobe para a F1!`;
+        } else if (canGo(S.ser + 1)) {
+            if (S.con) S.con = null;
+            S.msg += `CAMPEÃO DA ${N}! Promovido para o próximo degrau da pirâmide FIA!`;
+        } else {
+            S.msg += `CAMPEÃO DA ${N}! Aguardando idade mínima (${MINAGE[S.ser + 1]} anos) para subir à ${SR[S.ser + 1].n}.`;
+        }
+    } else {
+        S.msg += `Terminou em ${pos}º lugar na ${N} (${me.pts} pts).`;
+    }
 
     if (S.con) { S.cash += S.con.sal; S.con.gw += me.w; S.con.gp += me.pd; if (pos === 1) S.con.gt = 1; S.con.left--; if (S.con.left <= 0) evalCon(); }
     if (F1) { S.tot.w += me.w; S.tot.pd += me.pd; S.tot.pts += me.pts; if (pos === 1) S.tot.t++; S.bad = (pos > 15 && S.h2h.rL > S.h2h.rW) ? S.bad + 1 : 0; }
 
-    if (!F1 && r() < .15) { const a = Math.floor(r() * 8), b = (a + 1 + Math.floor(r() * 7)) % 8; S.v[a] = Math.min(S.god ? 100 : 99, S.v[a] + 4); S.v[b] = Math.min(S.god ? 100 : 99, S.v[b] + 3); S.brk = 1; S.msg += ` BREAKOUT: ${AT[a]} e ${AT[b]} evoluíram!`; }
+    if (!F1 && r() < .15) { 
+        const a = Math.floor(r() * 8), b = (a + 1 + Math.floor(r() * 7)) % 8; 
+        S.v[a] = Math.min(S.god ? 100 : 99, S.v[a] + 4); S.v[b] = Math.min(S.god ? 100 : 99, S.v[b] + 3); 
+        S.brk = 1; S.msg += ` BREAKOUT: ${AT[a]} +4, ${AT[b]} +3!`; 
+    }
+    
+    if (pos <= 8 && !S.spons && r() < .28) { S.spons = 2; S.msg += ' Novo patrocinador pessoal!'; }
+    else if (!F1 && S.ser >= 2 && pos > 5 && !S.spons && !S.acad && r() < .22) { S.paid = 1; S.msg += ' Um piloto pagante comprou sua vaga nas equipes de ponta!'; }
 
     if ((!F1 && S.age >= 25) || (F1 && (S.age >= 41 || S.bad >= 2 || (S.age >= 36 && pos > 3 && r() < (S.age - 35) * .12)))) { S.ph = 'end'; return; }
     if (!S.acad && S.ser >= 1 && S.age >= 15 && pos <= 3 && !F1) { S.ph = 'acad_pick'; return; }
@@ -555,7 +612,7 @@ export function actionBuyLife(id: string) {
         S.cash -= item.cost; S.items.push(id); const cap = S.god ? 100 : 99;
         if (item.bonus) S.v[item.bonus[0]] = clamp(S.v[item.bonus[0]] + item.bonus[1], 40, cap);
         if (item.rep) S.rep = clamp(S.rep + item.rep, -6, 8);
-        nw(`ESTILO DE VIDA: ${S.name} adquire ${item.n}`, `Novo investimento.`);
+        nw(`ESTILO DE VIDA: ${S.name} adquire ${item.n}`, `Novo investimento pessoal chama a atenção no paddock.`);
     }
     notify();
 }
@@ -577,11 +634,21 @@ export function actionEventChoice(k: number) {
 }
 
 export function actionResCont() { S.ph = 'mom_pre'; S.mom_idx = 1; notify(); }
-export function actionAcadPick(k: number) { const ac = ACAD[k]; S.acad = ac.id; nw(`ACADEMIA F1: ${S.name} assina com a ${ac.n}!`, ``); prepOffers(); notify(); }
+export function actionAcadPick(k: number) { const ac = ACAD[k]; S.acad = ac.id; nw(`ACADEMIA F1: ${S.name} assina com a ${ac.n}!`, `O jovem piloto passa a integrar o programa oficial de desenvolvimento rumo à Fórmula 1.`); prepOffers(); notify(); }
 export function actionOffer(k: number) { const o = S.offs[k]; if (o.cont) { pick(o); } else { S.neg = { o, yrs: o.ser === 6 ? 2 : 1, w: 0, p: 0, ti: 0, sal: null }; fixNeg(); S.ph = 'neg'; } notify(); }
 export function actionNegBack() { S.neg = null; S.ph = 'offer'; notify(); }
 export function actionNegSign() { fixNeg(); S.con = { yrs: S.neg.yrs, left: S.neg.yrs, sal: S.neg.sal, w: S.neg.w, p: S.neg.p, ti: S.neg.ti, gw: 0, gp: 0, gt: 0 }; if (S.neg.o.poach) { S.rep -= 2; } const o = S.neg.o; S.neg = null; pick(o); notify(); }
 export function actionNegYears(k: number) { S.neg.yrs = k; fixNeg(); notify(); }
 export function actionNegUpdate(key: string, val: any) { S.neg[key] = val; fixNeg(); notify(); }
 
-export function actionLoadGame(data: any) { G = data.G; S = data.S; notify(); }
+export function actionLoadGame(data: any) { 
+    G = data.G; 
+    S = data.S; 
+    if (S) {
+        S.sl ??= 0;
+        S.items ??= [];
+        S.rlog ??= [];
+        if (S.ph === 'spin') S.ph = 'res';
+    }
+    notify(); 
+}
