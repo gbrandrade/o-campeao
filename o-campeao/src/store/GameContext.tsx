@@ -1,10 +1,10 @@
 // src/store/GameContext.tsx
 import { createContext, useState, useContext, type ReactNode } from 'react';
-import type { GlobalDraftState, GameState } from '../types/game';
+import type { GlobalDraftState, GameState } from '../types/game'; // Certifique-se de que o game.ts foi movido para src/types/game.ts
 
 interface GameContextType {
-    view: 'home' | 'draft' | 'career' | 'result';
-    setView: (view: 'home' | 'draft' | 'career' | 'result') => void;
+    view: 'home' | 'draft' | 'career' | 'res';
+    setView: (view: 'home' | 'draft' | 'career' | 'res') => void;
     draftState: GlobalDraftState | null;
     setDraftState: React.Dispatch<React.SetStateAction<GlobalDraftState | null>>;
     gameState: GameState | null;
@@ -14,7 +14,7 @@ interface GameContextType {
 const GameContext = createContext<GameContextType | undefined>(undefined);
 
 export const GameProvider = ({ children }: { children: ReactNode }) => {
-    const [view, setView] = useState<'home' | 'draft' | 'career' | 'result'>('home');
+    const [view, setView] = useState<'home' | 'draft' | 'career' | 'res'>('home');
     const [draftState, setDraftState] = useState<GlobalDraftState | null>(null);
     const [gameState, setGameState] = useState<GameState | null>(null);
 
