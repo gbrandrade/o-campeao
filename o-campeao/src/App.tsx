@@ -1,4 +1,3 @@
-// src/App.tsx
 import { useState, useEffect } from 'react';
 import {
   G, S, subscribe, startDraft, pickAttribute, swapDriver, startCareer,
@@ -55,7 +54,9 @@ export default function App() {
               <span className={`nav-pill ${view === 'res' ? 'active' : ''}`}>Legado</span>
             </div>
           </div>
-          <a className="sponsor-pill" href="#" target="_blank"><span>Espaço de patrocínio</span><strong>Anuncie aqui</strong></a>
+          <a className="sponsor-pill" href="https://wa.me/5549989139808?text=Ol%C3%A1!%20Quero%20anunciar%20no%20jogo%20O%20Campe%C3%A3o." target="_blank" rel="noopener noreferrer">
+            <span>Espaço de patrocínio</span><strong>Anuncie aqui</strong>
+          </a>
           <div className="hd-right">
             {view !== 'home' && G && <i className="seed-pill">SEED {G.seed}</i>}
             <button type="button" className="icon-btn" onClick={toggleTheme} title="Alternar tema">
@@ -102,14 +103,31 @@ const HomeView = ({ onStart }: { onStart: (isLoad?: boolean) => void }) => {
   const [nat, setNat] = useState('BRA · Brasil');
   const [copied, setCopied] = useState(false);
   const [hasSave, setHasSave] = useState(false);
+  const [modalMsg, setModalMsg] = useState('');
+  const [errName, setErrName] = useState(false);
+  const [errNum, setErrNum] = useState(false);
+  const [lb, setLb] = useState<any[]>([]);
 
-  useEffect(() => { setHasSave(!!localStorage.getItem('tc_save')); }, []);
+  useEffect(() => {
+    setHasSave(!!localStorage.getItem('tc_save'));
+    try { setLb(JSON.parse(localStorage.getItem('tc_best') || '[]')); } catch(e){}
+  }, []);
 
   const handleGo = () => {
-    if (!name && !num) return alert('Dê um nome e número ao seu piloto.');
+    const rawName = name.replace(/[<>]/g, '').trim();
     const uStr = num.trim();
+    const u = +uStr;
     const eggType = uStr === '19022006' ? 'max' : uStr === '11122005' ? 'lec' : null;
-    startDraft(Math.random().toString(36).slice(2, 8).toUpperCase(), name, uStr, eggType);
+    const badNum = !uStr || isNaN(u) || (!eggType && (u < 1 || u > 99));
+
+    setErrName(!rawName && !eggType);
+    setErrNum(badNum);
+
+    if (!rawName && !eggType && badNum) return setModalMsg('Dê um nome ao seu piloto e escolha um número entre 1 e 99 para largar.');
+    if (!rawName && !eggType) return setModalMsg('Dê um nome ao seu piloto para largar.');
+    if (badNum) return setModalMsg('Escolha um número entre 1 e 99 para o seu carro.');
+
+    startDraft(Math.random().toString(36).slice(2, 8).toUpperCase(), rawName, uStr, eggType);
     onStart(false);
   };
 
@@ -129,6 +147,8 @@ const HomeView = ({ onStart }: { onStart: (isLoad?: boolean) => void }) => {
     setTimeout(() => setCopied(false), 2500);
   };
 
+  const oc = (v: number) => v >= 88 ? 'g' : v >= 78 ? 'h' : v >= 68 ? 'm' : 'l';
+
   return (
       <section id="home" className="view" style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1.15fr) minmax(0, 0.85fr)', gap: '14px' }}>
         <div className="home-col-left">
@@ -140,8 +160,8 @@ const HomeView = ({ onStart }: { onStart: (isLoad?: boolean) => void }) => {
             </div>
             <div>
               <div className="form-bar">
-                <input className="form-nm" placeholder="Nome do piloto" value={name} onChange={e => setName(e.target.value)} />
-                <input className="form-nu" type="number" placeholder="Nº (1-99)" value={num} onChange={e => setNum(e.target.value)} />
+                <input className={`form-nm ${errName ? 'err' : ''}`} placeholder="Nome do piloto" maxLength={18} autoComplete="off" value={name} onChange={e => { setName(e.target.value); setErrName(false); }} />
+                <input className={`form-nu ${errNum ? 'err' : ''}`} type="text" inputMode="numeric" maxLength={8} placeholder="Nº (1-99)" value={num} onChange={e => { setNum(e.target.value); setErrNum(false); }} />
                 <select className="form-na" value={nat} onChange={e => setNat(e.target.value)}>{NA.map(n => <option key={n}>{n}</option>)}</select>
               </div>
               <div className="row">
@@ -156,6 +176,7 @@ const HomeView = ({ onStart }: { onStart: (isLoad?: boolean) => void }) => {
             ))}
           </div>
         </div>
+
         <div className="home-col-right">
           <div className="race-visual">
             <div className="rv-top"><span className="rv-dot"></span> RED BULL RING · SPIELBERG <span className="rv-season">4.318 KM</span></div>
@@ -169,7 +190,30 @@ const HomeView = ({ onStart }: { onStart: (isLoad?: boolean) => void }) => {
               <div className="rv-caption">TELEMETRIA AO VIVO<br/><b>TODA LENDA COMEÇA AQUI.</b></div>
             </div>
           </div>
-          <div className="pn lb-card"><h2><span>Melhores carreiras (Local)</span></h2><div className="lb-scroll tw"><p className="mut">Comece uma carreira para registrar dados.</p></div></div>
+          <div className="pn lb-card">
+            <h2><span>Melhores carreiras (Local)</span></h2>
+            <div className="lb-scroll tw">
+              {lb.length ? (
+                <table>
+                  <thead><tr><th>#</th><th>PILOTO</th><th>NÍVEL</th><th>TÍTULOS</th><th>VIT</th><th>OVR</th></tr></thead>
+                  <tbody>
+                    {lb.map((r, i) => (
+                      <tr key={i}>
+                        <td><span className="ps">{i + 1}</span></td>
+                        <td><b>{r.n}</b></td>
+                        <td>{r.t}</td>
+                        <td>{r.ti}</td>
+                        <td>{r.w}</td>
+                        <td><span className={`ov ${oc(r.o)}`}>{r.o}</span></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ) : (
+                <p className="mut" style={{ textAlign: 'center', fontSize: '12.5px', marginTop: '20px' }}>Nenhuma carreira encerrada ainda. Complete uma trajetória para registrar seu recorde no Hall da Fama local.</p>
+              )}
+            </div>
+          </div>
           <div className="sponsor-footer-grid">
             <div className="ad-card-minimal">
               <div className="ad-card-head"><span>Apoie o projeto</span><span>Chave Pix</span></div>
@@ -178,9 +222,26 @@ const HomeView = ({ onStart }: { onStart: (isLoad?: boolean) => void }) => {
             <div className="ad-card-minimal">
               <div className="ad-card-head"><span>Anúncio</span><span>Patrocínio</span></div>
               <div className="ad-card-body"><div><strong>Sua Marca no Grid</strong><small>Destaque para fãs de F1.</small></div></div>
+              <div className="ad-card-foot">
+                <span>Este espaço</span>
+                <a href="https://wa.me/5549989139808?text=Ol%C3%A1!%20Quero%20anunciar%20no%20jogo%20O%20Campe%C3%A3o." target="_blank" rel="noopener noreferrer">Anunciar agora →</a>
+              </div>
             </div>
           </div>
         </div>
+
+        {modalMsg && (
+          <div className="modal" role="dialog" onClick={() => setModalMsg('')}>
+            <div className="modal-box" onClick={e => e.stopPropagation()}>
+              <div className="modal-ico">
+                <svg className="ico ico-lg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              </div>
+              <h3>Falta algo no grid</h3>
+              <p>{modalMsg}</p>
+              <button className="cta" style={{ width: '100%' }} onClick={() => setModalMsg('')}>Entendi</button>
+            </div>
+          </div>
+        )}
       </section>
   );
 };
@@ -243,6 +304,7 @@ const DraftView = ({ onDone }: { onDone: () => void }) => {
                 <div className="tag"><SvgIcon icon={IC.check} /> DRAFT CONCLUÍDO</div>
                 <h3 className="big">Potencial calculado: {Math.round(G.v.reduce((a:number, b:number) => a + b) / 8)}</h3>
                 <p className="mut">As propostas para o Kart já estão na sua mesa. Clique em "Iniciar carreira" ao lado para começar.</p>
+                {G.egg === 'lec' && <p style={{ marginTop: '16px', fontWeight: 700, color: 'var(--tx)', borderTop: '1px solid var(--div)', paddingTop: '12px', marginBottom: 0, textAlign: 'center', fontSize: '16px' }}>te amo amor &lt;3</p>}
               </div>
           )}
         </div>
@@ -268,6 +330,9 @@ const CareerView = ({ onEnd }: { onEnd: () => void }) => {
 
   const fmt = (m: number) => m >= 1 ? '€' + (m >= 10 ? Math.round(m) : m.toFixed(2)) + 'M' : '€' + Math.round(m * 1000) + ' mil';
   const oc = (v: number) => v >= 88 ? 'g' : v >= 78 ? 'h' : v >= 68 ? 'm' : 'l';
+  
+  // Utiliza a fallback de cor hsl assim como no index.html
+  const getTeamColor = (tName: string, tIdx: number) => TEAM_COLORS[tName] || `hsl(${(tIdx * 42) % 360} 65% 50%)`;
 
   if (ph === 'end') {
     return (
@@ -293,7 +358,7 @@ const CareerView = ({ onEnd }: { onEnd: () => void }) => {
               <button className={tab === 2 ? 'on' : ''} onClick={() => setTab(2)}>Histórico</button>
             </div>
             <div id="stn">
-              <div className="tag">{tab === 2 ? `HISTÓRICO (${S.rlog?.length || 0})` : S.F.length ? `${sr.n} · ${S.year} (${S.F.length} CARROS)` : 'GRID'}</div>
+              <div className="tag" style={{ margin: '4px 0 10px' }}>{tab === 2 ? `HISTÓRICO DE GPs (${S.rlog?.length || 0})` : S.F.length ? `${sr.n} · ${S.year} (${S.F.length} CARROS)` : 'GRID'}</div>
 
               {tab === 0 && (
                   <div className="tw">
@@ -303,11 +368,11 @@ const CareerView = ({ onEnd }: { onEnd: () => void }) => {
                       {rk.map((d: any, i: number) => {
                         const o = d.p ? ovr() : Math.round(d.r);
                         const cInfo = getCarRankInfo(S.ser, d.t);
-                        const teamColor = TEAM_COLORS[S.T[d.t].n] || '#888';
+                        const teamColor = getTeamColor(S.T[d.t].n, d.t);
                         return (
                             <tr key={i} className={d.p ? 'me' : ''}>
                               <td><span className="ps">{i + 1}</span></td>
-                              <td><i className="dt" style={{ background: teamColor }}></i><b>{d.n}</b> <small className="mut">({d.p ? S.age : d.age}a)</small><br/><small className="mut">{S.T[d.t].n} ({cInfo.rank}º)</small></td>
+                              <td><i className="dt" style={{ background: teamColor }}></i><b style={{ fontFamily: 'var(--f-head)' }}>{d.n}</b> <small className="mut">({d.p ? S.age : d.age}a)</small><br/><small className="mut">{S.T[d.t].n} ({cInfo.rank}º)</small></td>
                               <td><span className={`ov ${oc(o)}`}>{o}</span></td>
                               <td><span className={`ov ${oc(cInfo.ovr)}`}>{cInfo.ovr}</span></td>
                               <td className="pp">{d.pts}</td>
@@ -327,11 +392,11 @@ const CareerView = ({ onEnd }: { onEnd: () => void }) => {
                       {[...S.T].sort((a,b) => b.pts - a.pts).map((x: any, i: number) => {
                         const tIdx = S.T.indexOf(x);
                         const info = getCarRankInfo(S.ser, tIdx);
-                        const teamColor = TEAM_COLORS[x.n] || '#888';
+                        const teamColor = getTeamColor(x.n, tIdx);
                         return (
                             <tr key={i} className={x.n === S.tn ? 'me' : ''}>
                               <td><span className="ps">{i + 1}</span></td>
-                              <td><i className="dt" style={{ background: teamColor }}></i><b>{x.n}</b><br/><small className="mut">{S.F.filter((d:any) => d.t === tIdx).map((d:any) => d.n.split(' ').pop()).join(' / ')}</small></td>
+                              <td><i className="dt" style={{ background: teamColor }}></i><b style={{ fontFamily: 'var(--f-head)' }}>{x.n}</b><br/><small className="mut">{S.F.filter((d:any) => d.t === tIdx).map((d:any) => d.n.split(' ').pop()).join(' / ')}</small></td>
                               <td><span className={`ov ${oc(info.ovr)}`}>{info.ovr}</span></td>
                               <td><small className="mut"><b>{info.rank}º</b>/{info.total}</small></td>
                               <td className="pp">{x.pts}</td>
@@ -345,15 +410,15 @@ const CareerView = ({ onEnd }: { onEnd: () => void }) => {
 
               {tab === 2 && (
                   (!S.rlog || S.rlog.length === 0) ? (
-                      <p className="mut" style={{ padding: '12px' }}>Nenhuma corrida disputada.</p>
+                      <p className="mut" style={{ padding: '12px' }}>Nenhuma corrida disputada ainda. Largue na temporada para registrar seu histórico pista a pista.</p>
                   ) : (
                       <div className="tw">
                         <table>
-                          <thead><tr><th style={{ width: '72px', paddingLeft: '12px', textAlign: 'left' }}>ANO</th><th>PISTA</th><th>LARG</th><th>CHEG</th><th>PTS</th></tr></thead>
+                          <thead><tr><th style={{ width: '72px', paddingLeft: '12px', textAlign: 'left' }}>ANO</th><th>PISTA / ETAPA</th><th>LARG</th><th>CHEG</th><th>PTS</th></tr></thead>
                           <tbody>
                           {S.rlog.slice(0, 80).map((r: any, i: number) => (
                               <tr key={i} className={r.pos === 1 ? 'me' : ''}>
-                                <td style={{ width: '72px', paddingLeft: '12px', textAlign: 'left' }}><b>{r.y}</b><br/><small className="mut" style={{ fontSize: '10px' }}>{r.ser}</small></td>
+                                <td style={{ width: '72px', paddingLeft: '12px', textAlign: 'left' }}><b>{r.y}</b><br/><small className="mut" style={{ fontSize: '10px', whiteSpace: 'nowrap' }}>{r.ser}</small></td>
                                 <td><b style={{ fontSize: '11.5px' }}>{r.track}</b> {r.wet ? <SvgIcon icon={IC.rain}/> : ''}<br/><small className="mut">Venc: {r.win}</small></td>
                                 <td>P{r.grid}</td>
                                 <td><b>{r.pos === 'DNF' ? 'DNF' : 'P' + r.pos}</b></td>
@@ -370,20 +435,24 @@ const CareerView = ({ onEnd }: { onEnd: () => void }) => {
 
           {/* COLUNA CENTRAL */}
           <div className="col-center">
-            <div className="pn" id="pf">
-              <div className="pf">
+            <div className="pn" id="pf" style={{ padding: '16px 20px', flexShrink: 0 }}>
+              <div className="pf" style={{ display: 'flex', gap: '18px', alignItems: 'center' }}>
                 <div className="ring" style={{ '--p': ovr() } as any}><b>{ovr()}</b><small>OVR</small></div>
                 <div style={{ flex: 1, minWidth: '180px' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px', flexWrap: 'wrap' }}>
                     <h3 style={{ fontSize: '22px', margin: 0 }}><span className="gd" style={{ fontSize: '12px' }}>{S.flag}</span> {S.name} <span className="mut">#{S.num}</span></h3>
-                    {S.con && <span className="ct"><SvgIcon icon={IC.doc}/> {S.con.left}a · {fmt(S.con.sal)}</span>}
+                    {S.con && <span className="ct"><SvgIcon icon={IC.doc}/> {S.con.left}a · {fmt(S.con.sal)}/ano</span>}
                   </div>
                   <div className="chips">
-                    <span>{S.tn} {myCar ? `· Carro ${myCar.ovr} (${myCar.rank}º)` : ''}</span>
+                    <span><i className="dt" style={{ background: S.F.length ? getTeamColor(S.tn, S.team) : '#888', marginRight: '3px' }}></i>{S.tn} {myCar ? `· Carro ${myCar.ovr} (${myCar.rank}º)` : ''}</span>
                     <span>{sr.n} · {S.year} ({S.age}a)</span>
                     <span>POT {Math.round(pot())}</span>
                     <span className="sl-badge"><SvgIcon icon={IC.card}/> Superlicença: {S.sl}/40</span>
                     <span><SvgIcon icon={IC.wallet}/> {fmt(S.cash)}</span>
+                    {S.acad && (() => {
+                      const acObj = ACAD.find(a => a.id === S.acad);
+                      return acObj ? <span style={{ borderColor: acObj.c, color: 'var(--tx)' }}><SvgIcon icon={IC.cap}/> {acObj.n}</span> : null;
+                    })()}
                   </div>
                 </div>
               </div>
@@ -394,49 +463,69 @@ const CareerView = ({ onEnd }: { onEnd: () => void }) => {
                   <div>VITÓRIAS<b>{S.me.w}</b></div>
                   <div>PÓDIOS<b>{S.me.pd}</b></div>
                 </div>
+                {S.F.find((d: any) => d.t === S.team && !d.p) && (() => {
+                  const tm = S.F.find((d: any) => d.t === S.team && !d.p);
+                  return (
+                    <div className="h2h-bar">
+                      <span><SvgIcon icon={IC.swords}/> vs <b>{tm.n.split(' ').pop()}</b> ({Math.round(tm.r)})</span>
+                      <span>Q <b className="h2h-score">{S.h2h.qW}-{S.h2h.qL}</b></span>
+                      <span>R <b className="h2h-score">{S.h2h.rW}-{S.h2h.rL}</b></span>
+                    </div>
+                  );
+                })()}
               </div>
             </div>
 
-            <div className="pn bx" id="bx" style={{ overflowY: 'auto' }}>
+            <div className="pn bx" id="bx" style={{ flex: 1, overflowY: 'auto', padding: '20px 22px' }}>
               {ph === 'start' && (() => {
                 const trainCost = S.ser === 6 ? 1.5 : 0.08;
                 const canAffordTrain = S.cash >= trainCost;
                 return (
                     <>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <div><span className="tag">Pré-temporada {S.year}</span><h3>{sr.n} · {S.tn}</h3></div>
-                        <button className="cta" onClick={actionGo}>Largar {S.year} →</button>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
+                        <div><span className="tag">Pré-temporada {S.year}</span><h3>{sr.full || sr.n} · {S.tn}</h3></div>
+                        <button className="cta" onClick={actionGo}>Largar temporada {S.year} →</button>
                       </div>
+                      <p className="mut" style={{ fontSize: '12.5px', margin: '4px 0 12px' }}>
+                        <b>Especificação:</b> {sr.spec || ''} · <b>Calendário:</b> {S.sess.length} etapas · Companheiro: <b>{(() => {
+                          const tm = S.F.find((d: any) => d.t === S.team && !d.p);
+                          return tm ? `${tm.n} (OVR ${Math.round(tm.r)})` : '—';
+                        })()}</b>.
+                      </p>
                       {!S.trDone ? (
                           <>
-                            <div className="nl">Centro de performance</div>
+                            <div className="nl">Centro de performance e preparação</div>
                             <div className="train-grid">
                               <div className="train-card" style={!canAffordTrain ? { opacity: 0.7 } : {}}>
-                                <div><b><SvgIcon icon={IC.gauge}/> Simulador</b><small>+2 Qualy e Ritmo</small></div>
+                                <div><b><SvgIcon icon={IC.gauge}/> Simulador</b><small>+2 Qualificação e Ritmo</small></div>
                                 <button className="sm" disabled={!canAffordTrain} onClick={() => actionTrain(0)}>{canAffordTrain ? `Investir (${fmt(trainCost)})` : `Sem saldo (${fmt(trainCost)})`}</button>
                               </div>
                               <div className="train-card" style={!canAffordTrain ? { opacity: 0.7 } : {}}>
-                                <div><b><SvgIcon icon={IC.disc}/> Stint</b><small>+2 Pneus e Chuva</small></div>
+                                <div><b><SvgIcon icon={IC.disc}/> Eng. de Stint</b><small>+2 Pneus e Chuva</small></div>
                                 <button className="sm" disabled={!canAffordTrain} onClick={() => actionTrain(1)}>{canAffordTrain ? `Investir (${fmt(trainCost)})` : `Sem saldo (${fmt(trainCost)})`}</button>
                               </div>
                               <div className="train-card" style={!canAffordTrain ? { opacity: 0.7 } : {}}>
-                                <div><b><SvgIcon icon={IC.brain}/> Psico</b><small>+2 Mental e Cons.</small></div>
+                                <div><b><SvgIcon icon={IC.brain}/> Psicólogo</b><small>+2 Mental, Consist. e +1 REP</small></div>
                                 <button className="sm" disabled={!canAffordTrain} onClick={() => actionTrain(2)}>{canAffordTrain ? `Investir (${fmt(trainCost)})` : `Sem saldo (${fmt(trainCost)})`}</button>
                               </div>
                             </div>
                           </>
-                      ) : <p className="ok"><b><SvgIcon icon={IC.check}/> Preparação concluída.</b></p>}
+                      ) : <p className="ok" style={{ fontWeight: 600, fontSize: '12.5px' }}><b><SvgIcon icon={IC.check}/> Preparação de pré-temporada concluída.</b></p>}
 
-                      <div className="nl">Estilo de vida</div>
+                      <div className="nl">Estilo de vida & patrimônio (Compra e manutenção anual)</div>
                       <div className="train-grid">
                         {LIFE_ITEMS.map(item => {
                           const owned = (S.items || []).includes(item.id);
                           const canAfford = S.cash >= item.cost;
                           return (
                               <div key={item.id} className={`train-card ${owned ? 'owned' : ''}`} style={(!owned && !canAfford) ? { opacity: 0.7 } : {}}>
-                                <div><b><SvgIcon icon={item.ico}/> {item.n}</b><small>{item.desc}</small></div>
+                                <div>
+                                  <b><SvgIcon icon={item.ico}/> {item.n}</b>
+                                  <small>{item.desc}</small>
+                                  <small style={{ color: 'var(--tx)', fontWeight: 600, marginTop: '4px', display: 'block' }}>Manut: {fmt(item.maint)}/ano</small>
+                                </div>
                                 <button className="sm" disabled={owned || !canAfford} onClick={() => actionBuyLife(item.id)}>
-                                  {owned ? 'Comprado' : canAfford ? `Comprar (${fmt(item.cost)})` : `Sem saldo (${fmt(item.cost)})`}
+                                  {owned ? 'Adquirido' : canAfford ? `Comprar (${fmt(item.cost)})` : `Sem saldo (${fmt(item.cost)})`}
                                 </button>
                               </div>
                           );
@@ -448,34 +537,53 @@ const CareerView = ({ onEnd }: { onEnd: () => void }) => {
 
               {ph === 'mom_pre' && (() => {
                 const curSess = S.sess[S.stops[S.mom_idx]];
+                const m = S.mom_idx;
+                const tit = m === 0 ? `Abertura · ${curSess.track}` : m === 1 ? `Meio de temporada · ${curSess.track}` : `Grande Final · ${curSess.track}`;
+                const sub = m === 0 ? `Etapa 1 em ${curSess.track}. Foco total na largada.` : m === 1 ? `Etapa ${S.stops[1]+1} (${curSess.track}). Você está em P${pos} (${S.me.pts} pts) e o duelo interno está ${S.h2h.rW}x${S.h2h.rL}.` : `Decisão em ${curSess.track}! Você soma ${S.me.pts} pts na P${pos} geral.`;
                 return (
                     <>
-                      <span className="tag"><SvgIcon icon={IC.flag}/> Etapa em destaque</span>
-                      <h3 className="big">{curSess.track}</h3>
-                      <p className="mut">Acelere fundo para bater a concorrência.</p>
-                      <button className="cta" onClick={actionRaceMom}>Ir para a pista →</button>
+                      <span className="tag"><SvgIcon icon={IC.flag}/> Etapa em destaque · {sr.n}</span>
+                      <h3 className="big">{tit}</h3>
+                      <p className="mut" style={{ fontSize: '14.5px' }}>{sub}</p>
+                      <div className="row">
+                        <button className="cta" onClick={actionRaceMom}>Ir para a pista →</button>
+                      </div>
                     </>
                 );
               })()}
 
               {ph === 'mom_pos' && (() => {
                 const r = S.last_res;
+                const tm = S.F.find((d: any) => d.t === S.team && !d.p);
+                const headline = r.dnf ? 'Abandonou (DNF)' : `${r.pos}º Lugar`;
+                const tmTxt = (tm && r.tmPos) ? ` Seu companheiro ${tm.n} terminou em P${r.tmPos}.` : '';
+                const desc = r.dnf 
+                  ? `Em ${r.track}, largou em P${r.grid}, mas sofreu um abandono. Vencedor: ${r.win}. ${r.wet ? 'Pista molhada.' : ''} <b class="ko">(+0 pts)</b>${tmTxt}`
+                  : `Em ${r.track}, largou em P${r.grid} e cruzou em P${r.pos} (Vencedor: ${r.win}).${tmTxt} ${r.wet ? 'Corrida na chuva.' : ''} <b style="color:var(--tx);">(+${r.pts} pts)</b>`;
+
                 return (
                     <>
                       <span className="tag">Telemetria pós-corrida · {r.track}</span>
-                      <h3 className={`big ${r.dnf ? 'ko' : r.pos === 1 ? 'ok' : ''}`}>{r.dnf ? 'Abandono (DNF)' : `${r.pos}º Lugar`}</h3>
-                      <p className="mut">Largou em P{r.grid}. {r.wet ? 'Pista molhada.' : ''} <b>(+{r.pts} pts)</b></p>
-                      <button className="cta" onClick={actionContMom}>Continuar →</button>
+                      <h3 className={`big ${r.dnf ? 'ko' : r.pos === 1 ? 'ok' : ''}`}>{headline}</h3>
+                      <p className="mut" style={{ fontSize: '14.5px' }} dangerouslySetInnerHTML={{ __html: desc }}></p>
+                      <div className="row">
+                        <button className="cta" onClick={actionContMom}>Continuar campeonato →</button>
+                      </div>
                     </>
                 );
               })()}
 
               {ph === 'event' && (
                   <>
-                    <div className="radio-box"><div className="radio-hd">Team Radio</div><h3 style={{ margin: 0, fontSize: '17px' }}>"{S.ev[0]}"</h3></div>
+                    <div className="radio-box">
+                      <div className="radio-hd">
+                        <span className="radio-wave"><i></i><i></i><i></i></span> Team Radio · Engenheiro de corrida
+                      </div>
+                      <h3 style={{ margin: 0, fontSize: '17px' }}>"{S.ev[0]}"</h3>
+                    </div>
                     {[1, 2].map((i, k) => (
                         <button key={k} className="op" onClick={() => actionEventChoice(k)}>
-                          <b>{S.ev[i][0]}</b><small>Probabilidade técnica: {Math.round(S.pp[k] * 100)}%</small>
+                          <b>{S.ev[i][0]}</b><small>Probabilidade técnica de sucesso: <b>{Math.round(S.pp[k] * 100)}%</b> (Baseada em {AT[S.ev[i][3]]}: {S.v[S.ev[i][3]]})</small>
                         </button>
                     ))}
                   </>
@@ -484,10 +592,15 @@ const CareerView = ({ onEnd }: { onEnd: () => void }) => {
               {ph === 'res' && (
                   <>
                     <div className="radio-box" style={{ borderLeftColor: S.out.ok ? 'var(--ok)' : 'var(--ko)' }}>
-                      <h3 style={{ fontSize: '19px' }}>{S.out.ok ? 'Manobra executada com sucesso' : 'A estratégia falhou'}</h3>
-                      <p className="mut">{S.out.txt}</p>
+                      <div className="radio-hd" style={{ color: S.out.ok ? 'var(--ok)' : 'var(--ko)' }}>
+                        Relatório de telemetria · {S.out.ok ? 'Decisão certeira' : 'Falha na estratégia'}
+                      </div>
+                      <h3 style={{ fontSize: '19px', marginBottom: '6px' }}>{S.out.ok ? 'Manobra executada com sucesso' : 'A estratégia não funcionou'}</h3>
+                      <p className="mut" style={{ margin: 0, fontSize: '13.5px' }}>{S.out.txt}</p>
                     </div>
-                    <button className="cta" onClick={actionResCont}>Continuar temporada →</button>
+                    <div className="row">
+                      <button className="cta" onClick={actionResCont}>Continuar temporada →</button>
+                    </div>
                   </>
               )}
 
@@ -506,12 +619,12 @@ const CareerView = ({ onEnd }: { onEnd: () => void }) => {
 
               {ph === 'offer' && (
                   <>
-                    {S.msg && <p style={{ fontSize: '13px', borderLeft: '3px solid var(--tx-sec)', padding: '8px 12px', background: 'var(--surf-elev)' }}>{S.msg}</p>}
-                    <div className="tag">{S.first ? 'Escolha sua equipe no Kart (2018)' : 'Propostas para ' + (S.year + 1)}</div>
+                    {S.msg && <p style={{ fontSize: '13px', borderLeft: '3px solid var(--tx-sec)', padding: '8px 12px', background: 'var(--surf-elev)', borderRadius: '0 var(--r-sm) var(--r-sm) 0', margin: '0 0 12px' }}>{S.msg}</p>}
+                    <div className="tag">{S.first ? 'Escolha sua equipe inicial no Kart (2018)' : 'Propostas de contrato para ' + (S.year + 1)}</div>
                     {S.offs?.map((o: any, k: number) => {
                       const cInfo = getCarRankInfo(o.ser, o.t, true);
                       const tName = tnOf(o);
-                      const teamCol = TEAM_COLORS[tName] || '#888';
+                      const teamCol = getTeamColor(tName, o.t);
                       return (
                           <button key={k} className="op" onClick={() => actionOffer(k)} style={{ borderLeft: `5px solid ${teamCol}` }}>
                             <b>{o.cont ? 'Cumprir contrato · ' : o.poach ? 'Quebrar contrato · ' : o.re ? 'Renovação · ' : ''}{SR[o.ser].n} · {tName}</b>
@@ -530,37 +643,46 @@ const CareerView = ({ onEnd }: { onEnd: () => void }) => {
               )}
 
               {ph === 'neg' && (() => {
+                const cInfo = getCarRankInfo(S.neg.o.ser, S.neg.o.t, true);
                 const maxRaces = (S.neg.o.ser === 6 ? 24 : SR[S.neg.o.ser].R) * S.neg.yrs;
                 const mxSal = maxSal(S.neg);
                 return (
                     <>
                       <span className="tag">Mesa de negociação</span>
-                      <h3>{SR[S.neg.o.ser].n} · {tnOf(S.neg.o)}</h3>
+                      <h3>{SR[S.neg.o.ser].full || SR[S.neg.o.ser].n} · {tnOf(S.neg.o)}</h3>
+                      <p className="mut" style={{ fontSize: '12.5px', margin: '0 0 8px' }}>
+                        Força Projetada do Carro: <b style={{ color: 'var(--tx)' }}>OVR {cInfo.ovr}</b> ({cInfo.rank}º do grid · {cInfo.label})
+                      </p>
+                      
+                      <div className="rg">
+                        <span>Salário base estimado</span>
+                        <b>{fmt(sbase(S.neg.o))}</b>
+                      </div>
 
-                      <div className="nl">Duração do contrato:</div>
+                      <div className="nl">Duração do contrato</div>
                       <div className="yb">
                         {[...Array(S.neg.o.ser === 6 ? 4 : 2)].map((_, i) => (
-                            <button key={i} className={S.neg.yrs === i + 1 ? 'on' : ''} onClick={() => actionNegYears(i + 1)}>{i + 1} ano</button>
+                            <button key={i} className={S.neg.yrs === i + 1 ? 'on' : ''} onClick={() => actionNegYears(i + 1)}>{i + 1} ano{i ? 's' : ''}</button>
                         ))}
                       </div>
 
                       <div className="nl">Objetivos obrigatórios (Máx: {maxRaces} corridas)</div>
-                      <label style={{ display: 'block', margin: '6px 0', background: 'var(--surf-elev)', border: '1px solid var(--div)', borderRadius: 'var(--r-md)', padding: '10px 14px' }}>
+                      <label style={{ display: 'block', margin: '6px 0', background: 'var(--surf-elev)', border: '1px solid var(--div)', borderRadius: 'var(--r-md)', padding: '10px 14px', fontSize: '12.5px' }}>
                         Vitórias exigidas: <b>{S.neg.w}</b>
                         <input type="range" min="0" max={maxRaces} value={S.neg.w} onChange={e => actionNegUpdate('w', +e.target.value)} />
                       </label>
-                      <label style={{ display: 'block', margin: '6px 0', background: 'var(--surf-elev)', border: '1px solid var(--div)', borderRadius: 'var(--r-md)', padding: '10px 14px' }}>
+                      <label style={{ display: 'block', margin: '6px 0', background: 'var(--surf-elev)', border: '1px solid var(--div)', borderRadius: 'var(--r-md)', padding: '10px 14px', fontSize: '12.5px' }}>
                         Pódios exigidos: <b>{S.neg.p}</b>
                         <input type="range" min="0" max={maxRaces} value={S.neg.p} onChange={e => actionNegUpdate('p', +e.target.value)} />
                       </label>
-                      <label style={{ display: 'block', margin: '6px 0', background: 'var(--surf-elev)', border: '1px solid var(--div)', borderRadius: 'var(--r-md)', padding: '10px 14px' }}>
-                        <input type="checkbox" checked={!!S.neg.ti} onChange={e => actionNegUpdate('ti', e.target.checked ? 1 : 0)} /> Obrigação de ser campeão da categoria
+                      <label style={{ display: 'block', margin: '6px 0', background: 'var(--surf-elev)', border: '1px solid var(--div)', borderRadius: 'var(--r-md)', padding: '10px 14px', fontSize: '12.5px' }}>
+                        <input type="checkbox" checked={!!S.neg.ti} onChange={e => actionNegUpdate('ti', e.target.checked ? 1 : 0)} /> Obrigação de ser campeão
                       </label>
 
-                      <div className="nl">Salário exigido: <b className="gd">{fmt(S.neg.sal)}</b></div>
+                      <div className="nl">Sua exigência salarial: <b className="gd">{fmt(S.neg.sal)}</b></div>
                       <input type="range" min={sbase(S.neg.o) * 0.5} max={mxSal} step={mxSal / 300} value={S.neg.sal} onChange={e => actionNegUpdate('sal', +e.target.value)} />
 
-                      <div className="row" style={{ marginTop: '20px' }}>
+                      <div className="row" style={{ marginTop: '8px' }}>
                         <button className="cta" onClick={actionNegSign}>Assinar contrato →</button>
                         <button className="g" onClick={actionNegBack}>Voltar</button>
                       </div>
@@ -575,11 +697,15 @@ const CareerView = ({ onEnd }: { onEnd: () => void }) => {
             <div>
               <h2><span>Linha do tempo</span></h2>
               <div className="ys">
-                {S.rows.map((r: any, i: number) => <span key={i} className={r.pos === 1 ? 't' : ''}>{r.y} · P{r.pos}</span>)}
+                {S.rows.length === 0 ? (
+                  <span className="mut">Carreira iniciada em 2018</span>
+                ) : (
+                  S.rows.map((r: any, i: number) => <span key={i} className={r.pos === 1 ? 't' : ''}>{r.y} · {r.s} · P{r.pos}</span>)
+                )}
               </div>
             </div>
             <div style={{ borderTop: '1px solid var(--div)', paddingTop: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ font: '600 12px var(--f-head)', color: 'var(--tx-sec)', textTransform: 'uppercase' }}>Últimas atualizações</span>
+              <span style={{ font: '600 12px var(--f-head)', color: 'var(--tx-sec)', textTransform: 'uppercase', letterSpacing: '0.6px' }}>Últimas atualizações</span>
               <button className="g sm" onClick={() => setAllNews(!allNews)}>{allNews ? 'Recolher' : 'Ver tudo'}</button>
             </div>
             <div id="pr">
@@ -604,9 +730,20 @@ const ResultView = ({ onRestart }: { onRestart: () => void }) => {
   const ti = tier();
   const fmt = (m: number) => m >= 1 ? '€' + (m >= 10 ? Math.round(m) : m.toFixed(2)) + 'M' : '€' + Math.round(m * 1000) + ' mil';
 
+  // Salva no Local Storage (Leaderboard) quando o componente de Resultado monta
+  useEffect(() => {
+    try {
+      const a = JSON.parse(localStorage.getItem('tc_best') || '[]');
+      a.push({ n: S.name, s: S.tot.t * 100 + S.tot.w * 2 + S.tot.pd, t: ti, ti: S.tot.t, w: S.tot.w, o: S.peak });
+      a.sort((x: any, y: any) => y.s - x.s);
+      localStorage.setItem('tc_best', JSON.stringify(a.slice(0, 10)));
+    } catch (e) {}
+  }, []);
+
   const handleSaveImage = () => {
     const c = document.createElement('canvas'); c.width = 600; c.height = 800; const ctx = c.getContext('2d');
     if(!ctx) return;
+    
     ctx.fillStyle = '#0F0E0D'; ctx.fillRect(0, 0, 600, 800);
     ctx.fillStyle = '#191816'; ctx.fillRect(28, 28, 544, 744);
     ctx.strokeStyle = '#272724'; ctx.lineWidth = 2; ctx.strokeRect(28, 28, 544, 744);
@@ -640,8 +777,8 @@ const ResultView = ({ onRestart }: { onRestart: () => void }) => {
   };
 
   return (
-      <section id="res" className="view">
-        <div className="pn res-left">
+      <section id="res" className="view" style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1fr)', gap: '14px' }}>
+        <div className="pn res-left" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
           <div style={{ textAlign: 'center' }}><span className="tag">Carreira encerrada</span></div>
           <div className="fifa">
             <div className="o">{S.peak}</div><span className="gd">{S.flag} #{S.num}</span><div className="n">{S.name}</div>
@@ -662,7 +799,7 @@ const ResultView = ({ onRestart }: { onRestart: () => void }) => {
             <button className="g" onClick={clearAndRestart}>Jogar de novo</button>
           </div>
         </div>
-        <div className="pn res-right">
+        <div className="pn res-right" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
           <h2><span>Os 11 níveis de legado</span></h2>
           <div className="lad">
             {TN.map((n, i) => (
