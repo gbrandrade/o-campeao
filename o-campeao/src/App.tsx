@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import {
   G, S, subscribe, startDraft, pickAttribute, swapDriver, startCareer,
-  IC, AT, NA, TEAM_COLORS, SR, maxSal, sbase, getCarRankInfo, tnOf, ovr, pot, getTeammate, rank, LIFE_ITEMS, TN, ACAD,
+  IC, AT, NA, TEAM_COLORS, SR, maxSal, sbase, getCarRankInfo, tnOf, ovr, pot, rank, LIFE_ITEMS, TN, ACAD,
   actionTrain, actionBuyLife, actionGo, actionRaceMom, actionContMom, actionEventChoice,
   actionResCont, actionAcadPick, actionOffer, actionNegBack, actionNegSign, actionNegYears, actionNegUpdate, actionLoadGame
 } from './engine';
