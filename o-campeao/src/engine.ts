@@ -373,7 +373,13 @@ function market() {
     g.forEach((d:any, i:number) => {
         if (d.p || d.age < 37 || r() >= Math.min(.6, (d.age - 35) * .15)) return;
         const n = rookie(d.t); g[i] = n;
-        nw(...pk1([['ADEUS ÀS PISTAS: ' + d.n + ' anuncia aposentadoria da F1', ''], ['FIM DE UMA ERA: ' + d.n + ' se despede', '']]));
+        
+        // CORREÇÃO: Remoção do operador spread que causava o TS2556
+        const [titulo, descricao] = pk1([
+            ['ADEUS ÀS PISTAS: ' + d.n + ' anuncia aposentadoria da F1', ''], 
+            ['FIM DE UMA ERA: ' + d.n + ' se despede', '']
+        ]);
+        nw(titulo, descricao);
     });
     const open = g.filter((d:any) => !d.p && d.ct <= 0);
     for (let k = 0, x = 0; k < 80 && x < 2 && open.length > 1; k++) {
