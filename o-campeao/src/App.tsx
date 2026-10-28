@@ -1,5 +1,5 @@
 // src/App.tsx
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {
   G, S, subscribe, startDraft, pickAttribute, swapDriver, startCareer,
   IC, AT, NA, TEAM_COLORS, SR, maxSal, sbase, getCarRankInfo, tnOf, ovr, pot, getTeammate, rank, LIFE_ITEMS, TN, ACAD,
@@ -263,7 +263,6 @@ const CareerView = ({ onEnd }: { onEnd: () => void }) => {
   const sr = SR[S.ser];
   const rk = rank();
   const pos = rk.indexOf(S.me) + 1;
-  const tm = getTeammate();
   const myCar = S.F.length ? getCarRankInfo(S.ser, S.team) : null;
   const ph = S.ph;
 
