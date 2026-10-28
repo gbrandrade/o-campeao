@@ -1,5 +1,5 @@
 // src/store/GameContext.tsx
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useState, type ReactNode } from 'react';
 import type { GlobalDraftState, GameState } from '../types/game';
 
 interface GameContextType {
